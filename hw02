@@ -1,0 +1,121 @@
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<head>
+  <style>
+    td {
+      height: 7em;
+      width: 7em;
+      text-align: center;
+      box-shadow: 3px 3px 2px 2px #10eee3;
+    }
+
+    td:hover {
+      position: relative;
+      top: -8px;
+      left: 8px;
+
+    }
+
+    .cell {
+      height: 5em;
+      width: 5em;
+    }
+
+    .cell>.detail {
+      display: none;
+    }
+
+    .cell>.detail.open {
+      display: block;
+      position: absolute;
+      height: 10em;
+      width: 10em;
+      background-color: rgb(239, 243, 20);
+    }
+
+    .title {
+      color: darkolivegreen;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <h1 class="title">信息大二下学期爆炸课程表</h1>
+  <table id="grid" align="center" bgcolor="orange">
+
+  </table>
+
+  <script>
+    let arr1 = [" ", "星期一", "星期二", "星期三", "星期四", "星期五", "第一节", "Web应用开发技术", "西方文化简史", "管理信息系统",
+      "运营管理", " ", "第二节", "毛概", "管理科学基础", "毛概", "管理科学基础", "运营管理", "第三节", "管理信息系统", "形势与政策",
+      "会计学", "体育", "毛概", "第四节", "电子商务", "数据库管理及应用", " ", "会计学", " "];//定义了一个数组用来完成对初始课程表的建立。
+    let arr2 = ["<b>欢迎使用课程表</b>", "<big>Monday</big>", "<big>Tuesday</big>", "<big>Wednesday</big>", "<big>Thursday</big>", "<big>Friday</big>", "<big>8:20~10:00</big>",
+      "西区第一公共教学楼C411 </br>任课教师：吕成功 </br>周数：1~15周", "西区第一公共教学楼C311 </br>任课教师：张金柱 </br>周数：1~17周",
+      "西区第一公共教学楼C105 </br>任课教师：刘烨 </br>周数：1~15周（单周）", "西区第一公共教学楼B405 </br>任课教师：刘亮 </br>周数：1~15周（单周）",
+      "<b>恭喜您没有课！！！</b>", "<big>10:20~12:00</big>", "西区第一公共教学楼A120 </br>任课教师：顾洪英 </br>周数：1~16周",
+      "西区第一公共教学楼C411 </br>任课教师：赵方方 </br>周数：3~17周", "西区第一公共教学楼A120 </br>任课教师：顾洪英 </br>周数：1~16周",
+      "西区第一公共教学楼C411 </br>任课教师：赵方方 </br>周数：3~17周", "西区第一公共教学楼B405 </br>任课教师：刘亮 </br>周数：1~15周（单周）", "<big>14:00~15:40</big>",
+      "西区第一公共教学楼C105 </br>任课教师：刘烨 </br>周数：1~15周（单周）", "西区第一公共教学楼C123 </br>任课教师：邵夏 李坤 </br>周数：5~7周",
+      "西区第一公共教学楼B101 </br>任课教师：姜红 </br>周数：1~17周（单周）", "北苑体育馆 </br>任课教师：芳老师 </br>周数：1~16周",
+      "西区第一公共教学楼C411 </br>任课教师：顾洪英 </br>周数：1~16周", "<big>16:00~17:40</big>", "西区第一公共教学楼B303 </br>课教师：张亮 </br>周数：3~17周",
+      "西区第一公共教学楼C109 </br>任课教师：吴君 </br>周数：1~15周", "<b>恭喜您没有课！！！</b>", "西区第一公共教学楼B101 </br>任课教师：姜红 </br>周数：1~17周",
+      "<b>恭喜您没有课！！！</b>"]//定义了另一个数组存放详细信息。
+    let f = function (event) {
+      console.log(i, j, i * 6 + j);
+    }
+    let tblEl = document.getElementById('grid');//通过循环的嵌套建立一个五行六列的课程表。
+    for (let i = 0; i < 5; i++) {
+      let trEl = document.createElement('tr');
+      for (let j = 0; j < 6; j++) {
+        let tdEl = document.createElement('td');
+        let divEl = document.createElement('div')
+        divEl.className = 'cell';
+
+        let detailDivEl = document.createElement('div');
+        detailDivEl.className = 'detail';
+        detailDivEl.innerHTML = arr2[i * 6 + j];//对详细信息的输入。
+        detailDivEl.onmouseout = function (event) {
+          let names = detailDivEl.className.split(' ');
+          names = names.filter((x) => x != 'open')
+          detailDivEl.className = names.join(' ');
+        }
+        divEl.append(detailDivEl);
+
+        let briefDivEl = document.createElement('div');
+        briefDivEl.innerHTML = arr1[i * 6 + j];//这步是对初始表的建立。
+        divEl.append(briefDivEl);
+
+
+
+        tdEl.onclick = function (event) {
+          let names = detailDivEl.className.split(' ');
+
+          if (names.indexOf('open') >= 0) {
+            names = names.filter((x) => x != 'open')
+          } else {
+            names.push('open');
+          }//鼠标点击事件的建立。
+
+          console.log(names);
+
+          detailDivEl.className = names.join(' ');
+
+
+        };
+
+
+        let classNames = [];
+        tdEl.className = classNames.join(' ');
+
+        tdEl.append(divEl);
+        trEl.append(tdEl);
+      }
+      tblEl.append(trEl);
+    }
+
+  </script>
+</body>
+
+</html>
